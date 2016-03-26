@@ -14,6 +14,7 @@ public class FlightController : MonoBehaviour
 	float topRot = 1.0f;
 	public float topSpeed = 10.0f;
 	public float speed = 0.0f;
+	public float topDamped = 5.0f;
 	float acceleration = 0.07f;
 	float handling = 30.0f;
 	Vector3 velocity = new Vector3(0.0f,0.0f,0.0f);
@@ -33,28 +34,33 @@ public class FlightController : MonoBehaviour
 	void Update()
 	{
 
-		Flight();
+		ShipControls();
 
 	}
 
-	void Flight()
+	void ShipControls()
 	{
+		//Gets The Current Hands In Frame
 		System.Collections.Generic.List<Leap.Hand> hands = gestureRecogniser.getFrameHands();
 		if (hands.Count == 2) {
-			string current_gesture = gestureRecogniser.Recognise(hands[1]);
-			string for_ui = gestureRecogniser.Recognise(hands[0]);
+			//Gets current gestures of each hand
+			string left_hand_gesture = gestureRecogniser.Recognise(hands[0]);
 			Leap.Hand r_hand = hands [1];
-			if (for_ui == "FIST") {
+			//Shoot if right hand is in a fist
+			if (left_hand_gesture == "FIST") {
 				vehicle.transform.FindChild ("MyGuns").gameObject.GetComponent<Firing> ().fire = true;
 			}
 
 			if (r_hand != null) {
 
+				//Get angles required and pass them into their respective functions
 				float RollAngle = r_hand.PalmNormal.Roll;
 				float PitchAngle = r_hand.Direction.Pitch;
 				Tilt (RollAngle);
 				Rise (PitchAngle);
 			}
+
+			//Cap the speed
 			if (speed <= topSpeed) {
 				speed += acceleration;
 				acceleration += .001f;
@@ -65,33 +71,37 @@ public class FlightController : MonoBehaviour
 			velocity = (velocity.normalized + (vehicle.transform.forward) / (handling * 1.5f) ) * speed * Time.deltaTime;
 		}
 
+		//Move vehicle by velocity
 		vehicle.transform.position += velocity;
+		//Dampen speed
 		speed *= .99f;
-		velocity = (velocity.normalized + (vehicle.transform.forward) / (handling * 1.5f) ) * speed * Time.deltaTime;
 
 
 
 	}
 
-	bool Tilt(float Roll)
+	void Tilt(float Roll)
 	{
 
+		//Check if rolling left or right
 		if (Roll > 0.0f) {
+			//Constaining the rolling between these two values means players can fly straight, instead of constantly turning
 			if (Roll > 1.0f && Roll < 2.0f) {
+				//Find out new target rotation
 				Quaternion targetRotation = Quaternion.AngleAxis((1.0f * Mathf.Sign (Roll)), Vector3.up);
+				//Slerp to new target, using the handling as the time constraint
 				vehicle.transform.rotation = Quaternion.Slerp(vehicle.transform.rotation , vehicle.transform.rotation *= targetRotation, handling * Time.deltaTime);
-				return true;
 			}
 		} else {
+			//Constaining the rolling between these two values means players can fly straight, instead of constantly turning
 			if(Roll > -2.4f && Roll < -1.5f){
+				//Find out new target rotation
 				Quaternion targetRotation = Quaternion.AngleAxis((1.0f * Mathf.Sign (Roll)), Vector3.up);
+				//Slerp to new target, using the handling as the time constraint
 				vehicle.transform.rotation = Quaternion.Slerp(vehicle.transform.rotation , vehicle.transform.rotation *= targetRotation, handling * Time.deltaTime);
-				return true;
 			}
 
 		}
-
-		return false;
 	}
 	void Rise(float Pitch)
 	{
