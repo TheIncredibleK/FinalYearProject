@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Leap;
 public class ButtonChange : MonoBehaviour {
 
     public Color change_color;
