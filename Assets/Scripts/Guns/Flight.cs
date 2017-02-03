@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Flight : MonoBehaviour {
 
-    float speed = 10.0f;
+    public float speed = 10.0f;
 	// Use this for initialization
 	void Start () {
         this.transform.forward = this.transform.parent.transform.forward;
