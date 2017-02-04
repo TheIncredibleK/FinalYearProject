@@ -24,6 +24,7 @@ public class AddColliders : MonoBehaviour {
             if( current_hand.IsRight)
             {
                 Vector3 where_to = current_hand.Fingers[1].StabilizedTipPosition.ToVector3();
+
                 if(finger_collider != null)
                 {
                     finger_collider.transform.position = where_to;
