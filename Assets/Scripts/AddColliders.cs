@@ -21,7 +21,7 @@ public class AddColliders : MonoBehaviour {
         for (int i = 0; i < cur_frame.Hands.Count; i++)
         {
             Leap.Hand current_hand = cur_frame.Hands[i];
-            if( current_hand.IsRight)
+            if(current_hand.IsRight)
             {
                 Vector3 where_to = current_hand.Fingers[1].StabilizedTipPosition.ToVector3();
 
