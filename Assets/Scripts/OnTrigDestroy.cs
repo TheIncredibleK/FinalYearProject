@@ -3,7 +3,8 @@ using System.Collections;
 
 public class OnTrigDestroy : MonoBehaviour {
 
-	public GameObject death;
+	public GameObject deathParticles;
+	public GameObject deathDrop;
 	// Use this for initialization
 	void Start () {
 	
@@ -13,11 +14,16 @@ public class OnTrigDestroy : MonoBehaviour {
 	
 
     void OnTriggerEnter(Collider other)
-    {
-		Destroy (this.gameObject);
-		Destroy (other.gameObject);
-		if (death != null) {
-			Instantiate (death, this.transform.position, Quaternion.identity);
+	{
+		if (other.tag == "Bullet") {
+			Destroy (other.gameObject);
+			if (deathParticles != null) {
+				Instantiate (deathParticles, this.transform.position, Quaternion.identity);
+			}
+			if (deathDrop != null) {
+				Instantiate (deathDrop, this.transform.position, Quaternion.identity);
+			}
+			Destroy (this.gameObject);
 		}
-    }
+	}
 }
