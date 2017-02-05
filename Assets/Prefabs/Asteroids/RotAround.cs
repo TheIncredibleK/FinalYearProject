@@ -8,7 +8,7 @@ public class RotAround : MonoBehaviour {
 	public float stdSpeed;
 	// Use this for initialization
 	void Start () {
-		rotationSpeed = Random.Range (0.0f, this.transform.localScale.x * stdSpeed);
+		rotationSpeed = Random.Range (0.0f, stdSpeed/this.transform.localScale.x);
 	}
 
 	// Update is called once per frame
