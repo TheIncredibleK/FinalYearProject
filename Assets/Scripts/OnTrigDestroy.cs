@@ -15,6 +15,7 @@ public class OnTrigDestroy : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
 	{
+		Debug.Log("ENTER");
 		if (other.tag == "Bullet") {
 			Destroy (other.gameObject);
 			if (deathParticles != null) {

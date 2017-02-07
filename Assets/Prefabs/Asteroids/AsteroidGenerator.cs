@@ -97,7 +97,6 @@ public class AsteroidGenerator : MonoBehaviour {
 			for (int z = 0; z < numPerLevel/4; z++) {
 
 				float height = Mathf.PerlinNoise ((x + std_dist * x) - (other_dist) / scale, (z + std_dist * z) - (other_dist) / scale);
-				Debug.Log (height);
 				if (height < threshold) {
 					Instantiate (smallAsteroid, new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist ), levelSize * 2 * height, (z + (std_dist * height) * z * 2.0f) - (other_dist)), Quaternion.identity);
 				}
