@@ -6,12 +6,19 @@ public class AsteroidGenerator : MonoBehaviour {
 
 	public GameObject smallAsteroid;
 	public enum GenerationType {
-		PerlinCantor, GeneralRandom
+		PerlinCantor, GeneralRandom, JustPerlin
 	};
 	public GenerationType HowGenerate;
 	public float levelSize;
 	public float numPerLevel;
 	public float numLevels;
+
+
+
+	//Perlin Values
+	public float threshold;
+	public float scale;
+	public float std_dist;
 
 
 	// Use this for initialization
@@ -22,13 +29,16 @@ public class AsteroidGenerator : MonoBehaviour {
 		if(HowGenerate == GenerationType.PerlinCantor){
 			PerlinCantorStart ();
 		}
-		
+		if (HowGenerate == GenerationType.JustPerlin) {
+			ThreeDeePerlin ();
+		}
+
 	}
 
 	void PerlinCantorStart() {
 		for (int i = 0; i < numLevels; i++) {
 			for (int j = 0; j < numPerLevel; j++) {
-			
+
 				float perlinVal = 0.0f;
 				float x;
 				float y;
@@ -78,6 +88,20 @@ public class AsteroidGenerator : MonoBehaviour {
 
 		float cantorVal = (x + y) * (x + y + 1) / 2 + x;
 		return cantorVal;
-	
+
+	}
+
+	void ThreeDeePerlin(){
+		float other_dist = numPerLevel / 2;
+		for (int x = 0; x < numPerLevel/4; x++) {
+			for (int z = 0; z < numPerLevel/4; z++) {
+
+				float height = Mathf.PerlinNoise ((x + std_dist * x) - (other_dist) / scale, (z + std_dist * z) - (other_dist) / scale);
+				Debug.Log (height);
+				if (height < threshold) {
+					Instantiate (smallAsteroid, new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist ), levelSize * 2 * height, (z + (std_dist * height) * z * 2.0f) - (other_dist)), Quaternion.identity);
+				}
+			}
+		}
 	}
 }
