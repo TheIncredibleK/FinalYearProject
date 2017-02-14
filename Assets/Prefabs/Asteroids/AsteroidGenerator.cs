@@ -92,15 +92,19 @@ public class AsteroidGenerator : MonoBehaviour {
 	}
 
 	void ThreeDeePerlin(){
+		float x_off = 0.0f;
 		float other_dist = numPerLevel / 2;
 		for (int x = 0; x < numPerLevel/4; x++) {
+			float z_off = 0.0f;
 			for (int z = 0; z < numPerLevel/4; z++) {
 
-				float height = Mathf.PerlinNoise ((x + std_dist * x) - (other_dist) / scale, (z + std_dist * z) - (other_dist) / scale);
+				float height = Mathf.PerlinNoise (x_off, z_off);
 				if (height < threshold) {
 					Instantiate (smallAsteroid, new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist ), levelSize * 2 * height, (z + (std_dist * height) * z * 2.0f) - (other_dist)), Quaternion.identity);
 				}
+				z_off += 0.1f;
 			}
+			x_off += 0.1f;
 		}
 	}
 }
