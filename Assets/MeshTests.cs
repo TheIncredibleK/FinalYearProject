@@ -7,6 +7,7 @@ public class MeshTests : MonoBehaviour {
 	Vector3[] verts;
 	int sizeOfList;
 	public float degreeOfDistortion;
+	public float regularOffset;
 	// Use this for initialization
 	void Start () {
 		verts = this.GetComponent<MeshFilter> ().mesh.vertices;
@@ -35,4 +36,6 @@ public class MeshTests : MonoBehaviour {
 		this.GetComponent<MeshFilter> ().mesh.RecalculateBounds ();
 
 	}
+		
+
 }
