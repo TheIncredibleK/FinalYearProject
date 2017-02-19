@@ -14,12 +14,12 @@ public class Shooting : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         System.Collections.Generic.List<Leap.Hand> hands = gestureRecogniser.getFrameHands();
-        string current_gesture = gestureRecogniser.Recognise(hands[0]);
-        if (current_gesture == "FIST")
-        {
-            Firing fire = gun.GetComponent<Firing>();
-            fire.Fire();
-        }
-       
+		if (hands.Count >= 1) {
+			string current_gesture = gestureRecogniser.Recognise (hands [0]);
+			if (current_gesture == "FIST") {
+				Firing fire = gun.GetComponent<Firing> ();
+				fire.Fire ();
+			}
+		}
     }
 }

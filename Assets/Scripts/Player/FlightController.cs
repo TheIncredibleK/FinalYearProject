@@ -34,7 +34,7 @@ public class FlightController : MonoBehaviour
         string current_gesture = gestureRecogniser.Recognise(hands[1]);
         string for_ui = gestureRecogniser.Recognise(hands[0]);
         Leap.Hand r_hand = hands[1];
-
+		Debug.Log ("Pitch: " + r_hand.Direction.Pitch);
         if (current_gesture != "FIST")
         {
             if (for_ui != "UI")
@@ -53,8 +53,11 @@ public class FlightController : MonoBehaviour
 
                 Vector3 tiltVector = Vector3.Cross(vehicle.transform.forward.normalized, vehicle.transform.right);
                 Vector3 riseVector = Vector3.Cross(vehicle.transform.forward.normalized, vehicle.transform.up);
-                Tilt(relPosOfFingersTilt, tiltVector);
-                Rise(relPosFingersRise, riseVector);
+
+				float RollAngle = r_hand.PalmNormal.Roll;
+				float PitchAngle = r_hand.Direction.Pitch;
+				Tilt(RollAngle, tiltVector);
+				Rise (PitchAngle, riseVector);
             }
 
             vehicle.transform.position += vehicle.transform.forward * topSpeed;
@@ -63,25 +66,44 @@ public class FlightController : MonoBehaviour
 
     }
 
-    void Tilt(Vector3 relPosOfFingers, Vector3 tiltVector)
+	bool Tilt(float Roll, Vector3 tiltVector)
     {
         //Debug.Log((Mathf.Abs(relPosOfFingers.z)));
 
-        if (Mathf.Abs(relPosOfFingers.z)/100.0f > 0.8f)
-        {
-            float angle = topRot * (Mathf.Sign(relPosOfFingers.z));
-            Quaternion targetRotation = vehicle.transform.rotation * Quaternion.AngleAxis(-angle, tiltVector);
-            vehicle.transform.rotation = targetRotation;
-        }
+		if (Roll > 0.0f) {
+			if (Roll > 1.0f && Roll < 2.0f) {
+				//float angle = topRot * (Mathf.Sign(relPosOfFingers.z));
+				//Quaternion targetRotation = vehicle.transform.rotation * Quaternion.AngleAxis(-angle, tiltVector);
+				//vehicle.transform.rotation = targetRotation;
+				Quaternion targetRotation = Quaternion.AngleAxis((1.0f * Mathf.Sign (Roll)), Vector3.up);
+				vehicle.transform.rotation *= targetRotation;
+				return true;
+			}
+		} else {
+			if(Roll > -2.4f && Roll < -1.5f){
+				vehicle.transform.Rotate (vehicle.transform.up * (1.0f * Mathf.Sign (Roll)));
+				Quaternion targetRotation = Quaternion.AngleAxis((1.0f * Mathf.Sign (Roll)), Vector3.up);
+				vehicle.transform.rotation *= targetRotation;
+				return true;
+			}
+				
+		}
 
-    }
-    void Rise(Vector3 relPosOfFingers, Vector3 riseVector)
+		return false;
+	}
+	void Rise(float Pitch, Vector3 riseVector)
     {
-        if (Mathf.Abs(relPosOfFingers.z) / 100.0f > 0.3f)
-        {
-            float angle = topRot * (Mathf.Sign(relPosOfFingers.z));
-            Quaternion targetRotation = vehicle.transform.rotation * Quaternion.AngleAxis(angle, riseVector);
-            vehicle.transform.rotation = targetRotation;
-        }
-    }
+		float direction = 1.0f;
+		if (Pitch > 1.6f) {
+			direction *= -1;
+			Quaternion targetQuat = Quaternion.AngleAxis (direction, Vector3.left);
+			vehicle.transform.rotation *= targetQuat;
+		} else if (Pitch < 0.5f) {
+			Quaternion targetQuat = Quaternion.AngleAxis (direction, Vector3.left);
+			vehicle.transform.rotation *= targetQuat;
+		}
+
+	}
+
+	
 }
