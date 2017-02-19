@@ -20,7 +20,7 @@ public class ShipGenerator : MonoBehaviour {
 		cockpit.transform.parent = body.transform;
 		body.AddComponent<Setcolour> ();
 
-
+		//Create and move thruster
 		GameObject thrust = (GameObject)Instantiate (thruster, body.transform.position, Quaternion.identity);
 		thrust.transform.position -= (body.transform.up * body.transform.localScale.y / 2) + (body.transform.up * thrust.transform.localScale.y / 2);
 		thrust.transform.parent = body.transform;

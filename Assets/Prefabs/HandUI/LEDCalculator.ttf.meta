@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 29fc83f94a52be44ab5a8429447a6a43
+timeCreated: 1487460967
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: LED Calculator
+  fontNames:
+  - LED Calculator
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
