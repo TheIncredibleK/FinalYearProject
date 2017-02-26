@@ -147,4 +147,29 @@ public class AsteroidGenerator : MonoBehaviour {
 			}
 		}
 	}
+
+	public GameObject requestRandomAsteroid() {
+		bool found = false;
+		GameObject randomAsteroid = null;
+		while (!found) {
+			int x = Random.Range (2, size_x);
+			int z = Random.Range (2, size_z);
+			if (Asteroids[x, z] != null) {
+				randomAsteroid = Asteroids [x, z];
+				found = true;
+				Debug.Log ("Returning");
+			}
+		}
+		return randomAsteroid;
+	}
+
+	public void prettyPrintAsteroids() {
+		for (int i = 0; i < size_x; i++) {
+			for (int j = 0; j < size_z; j++) {
+				Vector3 cur_ast = asteroidPositions [i, j];
+				Debug.Log("x : " + cur_ast.x + "y: " + cur_ast.y + "z: " + cur_ast.z);
+			}
+		}
+
+	}
 }

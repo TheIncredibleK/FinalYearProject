@@ -27,7 +27,7 @@ public class ShipGenerator : MonoBehaviour {
 		body.GetComponent<Setcolour> ().randomiseSections = true;
 		body.GetComponent<Setcolour> ().randomiseColor = true;
 		body.AddComponent<Flight>();
-		body.GetComponent<Flight>().speed = Random.Range(10.0f, 30.0f);
+		body.AddComponent<SeekingTarget> ();
 
 
 	}
