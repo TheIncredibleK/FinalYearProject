@@ -29,8 +29,6 @@ public class CreateMenu : MonoBehaviour {
         b.transform.position = transform.position + (transform.up * transform.localScale.x/4) + (transform.forward * b.transform.localScale.z);
         b.GetComponent<Renderer>().material.color = Color.cyan;
         b.transform.LookAt(this.transform);
-        b.transform.SetParent(this.transform);
-        b.AddComponent<ButtonChange>();
         return b;
     }
 }

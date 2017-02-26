@@ -5,6 +5,9 @@ using UnityEngine;
 public class AsteroidGenerator : MonoBehaviour {
 
 	public GameObject smallAsteroid;
+	GameObject[,] Asteroids;
+	Vector3[,] asteroidPositions;
+	GameObject player;
 	public enum GenerationType {
 		PerlinCantor, GeneralRandom, JustPerlin
 	};
@@ -13,6 +16,11 @@ public class AsteroidGenerator : MonoBehaviour {
 	public float numPerLevel;
 	public float numLevels;
 
+
+	//Variables for asteroid spawn control
+	int size_x;
+	int size_z;
+	public float minDistance;
 
 
 	//Perlin Values
@@ -23,6 +31,7 @@ public class AsteroidGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		player = GameObject.FindGameObjectWithTag ("Player");
 		if (HowGenerate == GenerationType.GeneralRandom) {
 			RandomStart ();
 		}
@@ -92,20 +101,50 @@ public class AsteroidGenerator : MonoBehaviour {
 	}
 
 	void ThreeDeePerlin(){
+		size_x = (int)numPerLevel / 4;
+		size_z = (int)numPerLevel / 4;
 		float x_off = 0.0f;
 		float other_dist = numPerLevel / 2;
-		for (int x = 0; x < numPerLevel/4; x++) {
+		Asteroids = new GameObject[size_x, size_z];
+		asteroidPositions = new Vector3[size_x, size_z];
+
+		for (int x = 0; x < size_x; x++) {
 			float z_off = 0.0f;
-			for (int z = 0; z < numPerLevel/4; z++) {
+			for (int z = 0; z < size_z; z++) {
 
 				float height = Mathf.PerlinNoise (x_off, z_off);
 				if (height < threshold) {
-					GameObject cur_ast = (GameObject)Instantiate (smallAsteroid, new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist ), (levelSize * height) - levelSize/2, (z + (std_dist * height) * z * 2.0f) - (other_dist)), Quaternion.identity);
+					Asteroids [x, z] = (GameObject)Instantiate (smallAsteroid, new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist), (levelSize * height) - levelSize / 2, (z + (std_dist * height) * z * 2.0f) - (other_dist)), Quaternion.identity);
+					asteroidPositions [x, z] = Asteroids[x,z].transform.position;
+				} else {
+					Asteroids [x, z] = null;
+					asteroidPositions [x, z] = new Vector3 (-9999, -9999, -9999);
 				}
 
 				z_off += 0.1f;
 			}
 			x_off += 0.1f;
+		}
+	}
+
+
+	void Update() {
+		ManageAsteroids ();
+	}
+
+
+	void ManageAsteroids() {
+		for (int x = 0; x < size_x; x++) {
+			for (int z = 0; z < size_z; z++) {
+				if (Vector3.Distance (asteroidPositions [x, z], player.transform.position) > minDistance) {
+					Destroy (Asteroids [x, z]);
+					Asteroids [x, z] = null;
+				} else {
+					if(Asteroids[x,z] == null) {
+						Asteroids [x, z] = Instantiate (smallAsteroid, asteroidPositions [x, z], Quaternion.identity);
+					}
+				}
+			}
 		}
 	}
 }

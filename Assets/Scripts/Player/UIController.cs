@@ -53,7 +53,6 @@ public class UIController : MonoBehaviour {
         Vector3 uiPos = camera_.transform.position + (camera_.forward * .503f);
         created_ui = (GameObject)Instantiate(UI, uiPos, Quaternion.identity);
         created_ui.GetComponent<Renderer>().material.color = new Color(Color.green.r, Color.green.g, Color.green.b, initialAlpha);
-        created_ui.transform.SetParent(camera_);
     }
     void increaseMyAlpha()
     {
