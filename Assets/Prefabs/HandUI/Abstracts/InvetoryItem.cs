@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class InvetoryItem : MonoBehaviour {
 	public int amount;
 	public float value;
+	public string desc;
+	Texture2D icon;
 
 
 
