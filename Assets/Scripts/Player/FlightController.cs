@@ -5,105 +5,126 @@ using Leap.Unity;
 
 public class FlightController : MonoBehaviour
 {
-    Controller flyController;
-    GestureRecogniser gestureRecogniser;
-    public GameObject vehicle;
-    float rotateAngleX;
-    float rotateAngleZ;
-    float rateOfChange = 0.00058f;
-    float topRot = 1.0f;
-    float topSpeed = 0.06f;
+	Controller flyController;
+	GestureRecogniser gestureRecogniser;
+	public GameObject vehicle;
+	float rotateAngleX;
+	float rotateAngleZ;
+	float rateOfChange = 0.00058f;
+	float topRot = 1.0f;
+	float currentMaxSpeed = 20.0f;
+	float topSpeed = 20.0f;
+	float nitrosSpeed;
+	public float speed = 0.0f;
+	float acceleration = 0.07f;
+	float handling = 30.0f;
+	Vector3 velocity = new Vector3(0.0f,0.0f,0.0f);
+
+	// Use this for initialization
+	void Start()
+	{
+		//Initalise flight controller
+		flyController = new Controller();
+		nitrosSpeed = topSpeed * 4.0f;
+		gestureRecogniser = GetComponent<GestureRecogniser>(); 
+		rotateAngleX = 0.0f;
+		rotateAngleZ = 0.0f;
 
 
-    // Use this for initialization
-    void Start()
-    {
-        //Initalise flight controller
-        flyController = new Controller();
-        gestureRecogniser = GetComponent<GestureRecogniser>(); 
-        rotateAngleX = 0.0f;
-        rotateAngleZ = 0.0f;
+	}
 
+	void Update()
+	{
 
-    }
+		Flight();
 
+	}
 
-    void Update()
-    {
-        System.Collections.Generic.List<Leap.Hand> hands = gestureRecogniser.getFrameHands();
-        string current_gesture = gestureRecogniser.Recognise(hands[1]);
-        string for_ui = gestureRecogniser.Recognise(hands[0]);
-        Leap.Hand r_hand = hands[1];
-		Debug.Log ("Pitch: " + r_hand.Direction.Pitch);
-        if (current_gesture != "FIST")
-        {
-            if (for_ui != "UI")
-            {
-                //We only care about the right hand in this instance.
-                Vector3 relPosOfFingersTilt = (r_hand.Fingers[0].StabilizedTipPosition - r_hand.Fingers[4].StabilizedTipPosition).ToVector3();
+	void Flight()
+	{
+		System.Collections.Generic.List<Leap.Hand> hands = gestureRecogniser.getFrameHands();
+		if (hands.Count == 2) {
+			string current_gesture = gestureRecogniser.Recognise(hands[1]);
+			string for_ui = gestureRecogniser.Recognise(hands[0]);
+			Leap.Hand r_hand = hands [1];
 
-                Vector3 avgVec = r_hand.Fingers[0].StabilizedTipPosition.ToVector3();
-                avgVec += r_hand.Fingers[1].StabilizedTipPosition.ToVector3();
-                avgVec += r_hand.Fingers[2].StabilizedTipPosition.ToVector3();
-                avgVec += r_hand.Fingers[3].StabilizedTipPosition.ToVector3();
-                avgVec += r_hand.Fingers[4].StabilizedTipPosition.ToVector3();
-                avgVec = avgVec / 5;
-                Vector3 relPosFingersRise = (r_hand.PalmPosition.ToVector3() - avgVec);
-
-
-                Vector3 tiltVector = Vector3.Cross(vehicle.transform.forward.normalized, vehicle.transform.right);
-                Vector3 riseVector = Vector3.Cross(vehicle.transform.forward.normalized, vehicle.transform.up);
+			if (for_ui == "FIST") {
+				topSpeed = nitrosSpeed;
+			} else {
+				topSpeed = currentMaxSpeed;
+			}
+			if (r_hand != null) {
 
 				float RollAngle = r_hand.PalmNormal.Roll;
 				float PitchAngle = r_hand.Direction.Pitch;
-				Tilt(RollAngle, tiltVector);
-				Rise (PitchAngle, riseVector);
-            }
+				Tilt (RollAngle);
+				Rise (PitchAngle);
+			}
+			if (speed <= topSpeed) {
+				speed += acceleration;
+				acceleration += .001f;
+			}
 
-            vehicle.transform.position += vehicle.transform.forward * topSpeed;
-        }
+
+			//Added slipperiness to flight, to make it more natural
+			velocity = (velocity.normalized + (vehicle.transform.forward) / (handling * 1.5f) ) * speed * Time.deltaTime;
+		}
+
+		vehicle.transform.position += velocity;
+		speed *= .99f;
+		velocity = (velocity.normalized + (vehicle.transform.forward) / (handling * 1.5f) ) * speed * Time.deltaTime;
 
 
-    }
 
-	bool Tilt(float Roll, Vector3 tiltVector)
-    {
-        //Debug.Log((Mathf.Abs(relPosOfFingers.z)));
+	}
+
+	bool Tilt(float Roll)
+	{
 
 		if (Roll > 0.0f) {
 			if (Roll > 1.0f && Roll < 2.0f) {
-				//float angle = topRot * (Mathf.Sign(relPosOfFingers.z));
-				//Quaternion targetRotation = vehicle.transform.rotation * Quaternion.AngleAxis(-angle, tiltVector);
-				//vehicle.transform.rotation = targetRotation;
 				Quaternion targetRotation = Quaternion.AngleAxis((1.0f * Mathf.Sign (Roll)), Vector3.up);
-				vehicle.transform.rotation *= targetRotation;
+				vehicle.transform.rotation = Quaternion.Slerp(vehicle.transform.rotation , vehicle.transform.rotation *= targetRotation, handling * Time.deltaTime);
 				return true;
 			}
 		} else {
 			if(Roll > -2.4f && Roll < -1.5f){
-				vehicle.transform.Rotate (vehicle.transform.up * (1.0f * Mathf.Sign (Roll)));
 				Quaternion targetRotation = Quaternion.AngleAxis((1.0f * Mathf.Sign (Roll)), Vector3.up);
-				vehicle.transform.rotation *= targetRotation;
+				vehicle.transform.rotation = Quaternion.Slerp(vehicle.transform.rotation , vehicle.transform.rotation *= targetRotation, handling * Time.deltaTime);
 				return true;
 			}
-				
+
 		}
 
 		return false;
 	}
-	void Rise(float Pitch, Vector3 riseVector)
-    {
+	void Rise(float Pitch)
+	{
 		float direction = 1.0f;
 		if (Pitch > 1.6f) {
 			direction *= -1;
 			Quaternion targetQuat = Quaternion.AngleAxis (direction, Vector3.left);
-			vehicle.transform.rotation *= targetQuat;
+			vehicle.transform.rotation = Quaternion.Slerp(vehicle.transform.rotation, vehicle.transform.rotation *= targetQuat, handling * Time.deltaTime);
 		} else if (Pitch < 0.5f) {
 			Quaternion targetQuat = Quaternion.AngleAxis (direction, Vector3.left);
-			vehicle.transform.rotation *= targetQuat;
+			vehicle.transform.rotation = Quaternion.Slerp(vehicle.transform.rotation, vehicle.transform.rotation *= targetQuat, handling * Time.deltaTime);
 		}
 
 	}
 
-	
+	void OnCollisionEnter(Collision other) {
+		if (other.gameObject.tag == "Asteroid") {
+			Debug.Log ("Colliding");
+			//other.gameObject.GetComponent<OnTrigDestroy> ().();
+			speed = speed / 2;
+		}
+	}
+
+	void OnTriggerEnter(Collider other){
+		if (other.tag == "enemyBullet") {
+			//change health
+		}
+	}
+
+
 }
