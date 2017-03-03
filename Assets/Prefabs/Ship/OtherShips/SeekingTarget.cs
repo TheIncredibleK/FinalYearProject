@@ -25,7 +25,7 @@ public class SeekingTarget : MonoBehaviour {
 			Quaternion desiredRotation = Quaternion.LookRotation (target.transform.position - this.transform.position);
 			this.transform.rotation = Quaternion.Slerp (this.transform.rotation, desiredRotation, .01f);
 			Vector3 Reltarget = target.transform.position - this.transform.position;
-			Vector3 steering = Vector3.Normalize (Reltarget - this.GetComponent<Rigidbody> ().velocity) * 4.0f;
+			Vector3 steering = Vector3.Normalize (Reltarget - this.GetComponent<Rigidbody> ().velocity) *15.0f;
 			float curDist = Vector3.Distance (this.transform.position, steering);
 			if (curDist < maxAllowableDistance) {
 				steering *= (curDist / maxAllowableDistance);
