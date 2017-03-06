@@ -32,7 +32,6 @@ public class Item : MonoBehaviour {
 	void BeCollected() {
 		Debug.Log ("In to beCollected()");
 		UpdateAmount (1);
-
 		Destroy (this.gameObject);
 
 	}
