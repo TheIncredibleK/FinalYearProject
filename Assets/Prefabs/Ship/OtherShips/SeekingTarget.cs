@@ -42,6 +42,6 @@ public class SeekingTarget : MonoBehaviour {
 	IEnumerator FindTarget(float waitTime) {
 		yield return new WaitForSeconds (waitTime);
 		target = GameObject.FindGameObjectWithTag ("AstMng").GetComponent<AsteroidGenerator> ().requestRandomAsteroid ();
-		Debug.Log ("Made it out:: x: " + target.transform.position.x + "y: " + target.transform.position.y + " z: " + target.transform.position.z);
+		//Debug.Log ("Made it out:: x: " + target.transform.position.x + "y: " + target.transform.position.y + " z: " + target.transform.position.z);
 	}
 }
