@@ -11,6 +11,7 @@ public class ButtonBehaviours : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Hand") {
+			Debug.Log ("Hand");
 			if (!isTouching) {
 				if (mySlot.GetComponent<Slot> ().Purchase ()) {
 					image.GetComponent<UIBarManager> ().IncreaseSize ();
@@ -25,6 +26,5 @@ public class ButtonBehaviours : MonoBehaviour {
 	IEnumerator WaitToBuyAgain() {
 		yield return new WaitForSeconds (1.5f);
 		isTouching = false;
-
 	}
 }

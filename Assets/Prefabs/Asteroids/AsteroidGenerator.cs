@@ -114,8 +114,9 @@ public class AsteroidGenerator : MonoBehaviour {
 
 				float height = Mathf.PerlinNoise (x_off, z_off);
 				if (height < threshold) {
-					Asteroids [x, z] = (GameObject)Instantiate (smallAsteroid, new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist), (levelSize * height) - levelSize / 2, (z + (std_dist * height) * z * 2.0f) - (other_dist)), Quaternion.identity);
-					asteroidPositions [x, z] = Asteroids[x,z].transform.position;
+					//Asteroids [x, z] = (GameObject)Instantiate (smallAsteroid, new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist), (levelSize * height) - levelSize / 2, (z + (std_dist * height) * z * 2.0f) - (other_dist)), Quaternion.identity);
+					Asteroids[x,z] = null;
+					asteroidPositions [x, z] = new Vector3 ((x + (std_dist * height) * x * 2.0f) - (other_dist), (levelSize * height) - levelSize / 2, (z + (std_dist * height) * z * 2.0f) - (other_dist));
 				} else {
 					Asteroids [x, z] = null;
 					asteroidPositions [x, z] = new Vector3 (-9999, -9999, -9999);
