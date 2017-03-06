@@ -6,6 +6,7 @@ public class UIBarManager : MonoBehaviour {
 
 
 	public float amount_of_increase;
+	public int costOfIncrease;
     float local_y;
 	float local_x;
 	public float max_x;

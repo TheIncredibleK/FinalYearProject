@@ -17,7 +17,7 @@ public class OnTrigDestroy : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
 	{
-		Debug.Log ("Collision Occured : tag :" + other.tag);
+//		Debug.Log ("Collision Occured : tag :" + other.tag);
 		if (other.tag == "Bullet") {
 			Destroy (other.gameObject);
 			if (!hasHealth) {

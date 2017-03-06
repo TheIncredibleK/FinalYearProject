@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonBehaviours : MonoBehaviour {
 
@@ -8,19 +9,22 @@ public class ButtonBehaviours : MonoBehaviour {
 	public GameObject mySlot;
 	bool isTouching = false;
 
-
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Hand") {
 			if (!isTouching) {
-				image.GetComponent<UIBarManager> ().IncreaseSize ();
-				isTouching = true;
+				if (mySlot.GetComponent<Slot> ().Purchase ()) {
+					image.GetComponent<UIBarManager> ().IncreaseSize ();
+					isTouching = true;
+					StartCoroutine (WaitToBuyAgain ());
+				}
 			}
 
 		}
 	}
 
-	void OnTriggerExit() {
-		Debug.Log ("Untouching");
+	IEnumerator WaitToBuyAgain() {
+		yield return new WaitForSeconds (1.5f);
 		isTouching = false;
+
 	}
 }

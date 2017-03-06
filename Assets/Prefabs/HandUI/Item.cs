@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour {
 	//Private
-	int myAmount = 0;
 	public GameObject myslot;
 	public string myName;
 	GameObject player;
@@ -23,15 +22,15 @@ public class Item : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void UpdateAmount(int amountChange) {
-		myAmount += amountChange;
-		myslot.transform.Find ("Amount").GetComponent<Text>().text = myAmount.ToString();
+	void UpdateAmount() {
+		myslot.GetComponent<Slot> ().Increase (1);
+		Debug.Log (myName + " : collected");
 	}
 
 
 	void BeCollected() {
 		Debug.Log ("In to beCollected()");
-		UpdateAmount (1);
+		UpdateAmount ();
 		Destroy (this.gameObject);
 
 	}
