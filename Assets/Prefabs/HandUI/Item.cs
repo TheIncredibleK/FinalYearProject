@@ -8,7 +8,6 @@ public class Item : MonoBehaviour {
 	public GameObject myslot;
 	public string myName;
 	GameObject player;
-	float pull_dist = 5.0f;
 	float collect_dist = 2.0f;
 	float speed = 10.0f;
 	// Use this for initialization
@@ -23,20 +22,25 @@ public class Item : MonoBehaviour {
 	
 	// Update is called once per frame
 	void UpdateAmount() {
+		Debug.Log ("About to try");
 		myslot.GetComponent<Slot> ().Increase (1);
+		Debug.Log ("Amount Updated");
 	}
 
 
 	void BeCollected() {
+		Debug.Log ("Update");
 		UpdateAmount ();
-		Destroy (this.gameObject);
+		Debug.Log ("Got out");
+		DestroyImmediate (this.gameObject);
+		Debug.Log ("Destroyed");
 
 	}
 
 	void CheckIfBeingCollected() {
 		float myDist = Vector3.Distance (this.transform.position, player.transform.position);
 		//Debug.Log("My Dist : " + myDist);
-		if(myDist < pull_dist) {
+		if(myDist < player.GetComponent<ShipStatus>().magnet) {
 			if (myDist < collect_dist) {
 				BeCollected ();
 			} else {

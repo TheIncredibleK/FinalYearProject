@@ -15,7 +15,6 @@ public class PlaySoundWithinDistance : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (Vector3.Distance (player.transform.position, this.transform.position));
 		if (Vector3.Distance (player.transform.position, this.transform.position) < threshold) {
 			if (isPlaying == false) {
 				isPlaying = true;

@@ -12,9 +12,7 @@ public class FlightController : MonoBehaviour
 	float rotateAngleZ;
 	float rateOfChange = 0.00058f;
 	float topRot = 1.0f;
-	float currentMaxSpeed = 20.0f;
-	float topSpeed = 20.0f;
-	float nitrosSpeed;
+	public float topSpeed = 10.0f;
 	public float speed = 0.0f;
 	float acceleration = 0.07f;
 	float handling = 30.0f;
@@ -25,7 +23,6 @@ public class FlightController : MonoBehaviour
 	{
 		//Initalise flight controller
 		flyController = new Controller();
-		nitrosSpeed = topSpeed * 4.0f;
 		gestureRecogniser = GetComponent<GestureRecogniser>(); 
 		rotateAngleX = 0.0f;
 		rotateAngleZ = 0.0f;
@@ -48,11 +45,6 @@ public class FlightController : MonoBehaviour
 			string for_ui = gestureRecogniser.Recognise(hands[0]);
 			Leap.Hand r_hand = hands [1];
 
-			if (for_ui == "FIST") {
-				topSpeed = nitrosSpeed;
-			} else {
-				topSpeed = currentMaxSpeed;
-			}
 			if (r_hand != null) {
 
 				float RollAngle = r_hand.PalmNormal.Roll;

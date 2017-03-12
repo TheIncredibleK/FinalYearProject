@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Slot : MonoBehaviour {
-	public int amount = 5;
+	public int amount = 0;
 	public int cost = 1;
 	public int costIncrease = 2;
 	int currentAmount;
@@ -22,7 +22,11 @@ public class Slot : MonoBehaviour {
 	}
 
 	public void Increase(int increaseAmount) {
+		Debug.Log ("About to try increase");
+		Debug.Log (amount + " : " + increaseAmount);
 		amount += increaseAmount;
+		Debug.Log (amount + " : " + increaseAmount);
+		Debug.Log ("About to try increase by incAmt");
 		UpdateText ();
 
 	}
