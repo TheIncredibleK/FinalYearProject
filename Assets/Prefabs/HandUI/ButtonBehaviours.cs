@@ -6,21 +6,31 @@ public class ButtonBehaviours : MonoBehaviour {
 
 	public GameObject image;
 	public GameObject mySlot;
+	public GameObject player;
+	public int myFuncKeyValue;
 	bool isTouching = false;
 
+	void Start() {
+		player = GameObject.FindGameObjectWithTag ("Player");
+	}
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Hand") {
 			if (!isTouching) {
-				image.GetComponent<UIBarManager> ().IncreaseSize ();
-				isTouching = true;
+				if (mySlot.GetComponent<Slot> ().Purchase ()) {
+					Debug.Log ("Hand");
+					player.GetComponent<ShipStatus> ().Increase (image, myFuncKeyValue);
+					Debug.Log ("Left ship status");
+					isTouching = true;
+					StartCoroutine (WaitToBuyAgain ());
+				}
 			}
 
 		}
 	}
 
-	void OnTriggerExit() {
-		Debug.Log ("Untouching");
+	IEnumerator WaitToBuyAgain() {
+		yield return new WaitForSeconds (1.5f);
 		isTouching = false;
 	}
 }

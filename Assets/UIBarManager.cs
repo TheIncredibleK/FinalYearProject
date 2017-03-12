@@ -6,12 +6,14 @@ public class UIBarManager : MonoBehaviour {
 
 
 	public float amount_of_increase;
+	public int costOfIncrease;
     float local_y;
 	float local_x;
 	public float max_x;
 	float min_x;
 	float local_z;
 	float size;
+	float full_size = 3.5f;
 	// Use this for initialization
 	void Start () {
 		max_x = this.transform.localScale.x;
@@ -29,7 +31,7 @@ public class UIBarManager : MonoBehaviour {
 		if (local_x > max_x) {
 			local_x = max_x;
 		}
-		size = local_x;
+		size = (local_x/max_x) * full_size;
 		this.transform.localScale = new Vector3 (local_x, local_y, local_z);
 
 	}

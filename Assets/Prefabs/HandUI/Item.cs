@@ -5,11 +5,9 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour {
 	//Private
-	int myAmount = 0;
 	public GameObject myslot;
 	public string myName;
 	GameObject player;
-	float pull_dist = 5.0f;
 	float collect_dist = 2.0f;
 	float speed = 10.0f;
 	// Use this for initialization
@@ -23,25 +21,27 @@ public class Item : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void UpdateAmount(int amountChange) {
-		myAmount += amountChange;
-		myslot.transform.Find ("Amount").GetComponent<Text>().text = myAmount.ToString();
+	void UpdateAmount() {
+		Debug.Log ("About to try");
+		myslot.GetComponent<Slot> ().Increase (1);
+		Debug.Log ("Amount Updated");
 	}
 
 
 	void BeCollected() {
-		Debug.Log ("In to beCollected()");
-		UpdateAmount (1);
-		Destroy (this.gameObject);
+		Debug.Log ("Update");
+		UpdateAmount ();
+		Debug.Log ("Got out");
+		DestroyImmediate (this.gameObject);
+		Debug.Log ("Destroyed");
 
 	}
 
 	void CheckIfBeingCollected() {
 		float myDist = Vector3.Distance (this.transform.position, player.transform.position);
 		//Debug.Log("My Dist : " + myDist);
-		if(myDist < pull_dist) {
+		if(myDist < player.GetComponent<ShipStatus>().magnet) {
 			if (myDist < collect_dist) {
-				Debug.Log ("Making it into if check");
 				BeCollected ();
 			} else {
 				this.transform.position += (player.transform.position - this.transform.position).normalized * speed * Time.deltaTime;
