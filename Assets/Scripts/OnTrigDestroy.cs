@@ -17,6 +17,7 @@ public class OnTrigDestroy : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
 	{
+
 //		Debug.Log ("Collision Occured : tag :" + other.tag);
 		if (other.tag == "Bullet") {
 			Destroy (other.gameObject);
@@ -29,12 +30,18 @@ public class OnTrigDestroy : MonoBehaviour {
 					Instantiate (deathDrop, this.transform.position, Quaternion.identity);
 				}
 				if (!Explode) {
+					Debug.Log ("Making it to if");
 					if (this.transform.childCount > 0) {
+						Debug.Log ("Looping through kids");
 						for (int i = 0; i < this.transform.childCount; i++) {
 							Destroy (this.transform.GetChild (i));
-						}
-					Destroy (this.gameObject);
-
+						} 
+					}
+						Debug.Log ("Getting here");
+						this.GetComponent<Asteroid> ().RespawnSelf ();
+						Debug.Log ("Getting here 2");
+						Destroy (this.gameObject);
+				
 					}
 				} else {
 					for (int i = 0; i < this.transform.childCount; i++) {
@@ -50,7 +57,7 @@ public class OnTrigDestroy : MonoBehaviour {
 				this.GetComponent<OtherInventory> ().DamageHealth ();
 				if (this.GetComponent<OtherInventory> ().health <= 0) {
 					hasHealth = false;
-				}
+
 			}
 		}
 	}

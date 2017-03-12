@@ -24,12 +24,10 @@ public class Item : MonoBehaviour {
 	// Update is called once per frame
 	void UpdateAmount() {
 		myslot.GetComponent<Slot> ().Increase (1);
-		Debug.Log (myName + " : collected");
 	}
 
 
 	void BeCollected() {
-		Debug.Log ("In to beCollected()");
 		UpdateAmount ();
 		Destroy (this.gameObject);
 
@@ -40,7 +38,6 @@ public class Item : MonoBehaviour {
 		//Debug.Log("My Dist : " + myDist);
 		if(myDist < pull_dist) {
 			if (myDist < collect_dist) {
-				Debug.Log ("Making it into if check");
 				BeCollected ();
 			} else {
 				this.transform.position += (player.transform.position - this.transform.position).normalized * speed * Time.deltaTime;

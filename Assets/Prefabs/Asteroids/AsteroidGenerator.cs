@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class AsteroidGenerator : MonoBehaviour {
 
+	public GameObject[] prefabs;
 	public GameObject smallAsteroid;
 	GameObject[,] Asteroids;
 	Vector3[,] asteroidPositions;
+	bool[,] wasDestroyed;
 	GameObject player;
 	public enum GenerationType {
 		PerlinCantor, GeneralRandom, JustPerlin
@@ -107,7 +109,7 @@ public class AsteroidGenerator : MonoBehaviour {
 		float other_dist = numPerLevel / 2;
 		Asteroids = new GameObject[size_x, size_z];
 		asteroidPositions = new Vector3[size_x, size_z];
-
+		wasDestroyed = new bool[size_x, size_z];
 		for (int x = 0; x < size_x; x++) {
 			float z_off = 0.0f;
 			for (int z = 0; z < size_z; z++) {
@@ -121,7 +123,7 @@ public class AsteroidGenerator : MonoBehaviour {
 					Asteroids [x, z] = null;
 					asteroidPositions [x, z] = new Vector3 (-9999, -9999, -9999);
 				}
-
+				wasDestroyed [x, z] = false;
 				z_off += 0.1f;
 			}
 			x_off += 0.1f;
@@ -137,16 +139,37 @@ public class AsteroidGenerator : MonoBehaviour {
 	void ManageAsteroids() {
 		for (int x = 0; x < size_x; x++) {
 			for (int z = 0; z < size_z; z++) {
-				if (Vector3.Distance (asteroidPositions [x, z], player.transform.position) > minDistance) {
+				if (Vector3.Distance (asteroidPositions [x, z], player.transform.position) > minDistance && wasDestroyed[x,z] == false) {
 					Destroy (Asteroids [x, z]);
 					Asteroids [x, z] = null;
 				} else {
 					if(Asteroids[x,z] == null) {
-						Asteroids [x, z] = Instantiate (smallAsteroid, asteroidPositions [x, z], Quaternion.identity);
+						Asteroids [x, z] = Instantiate (prefabs[WhatAmI(x, z)], asteroidPositions [x, z], Quaternion.identity);
 					}
 				}
 			}
 		}
+	}
+
+	void DestroyedAsteroid(int x, int z) {
+		wasDestroyed [x, z] = true;
+	}
+
+	void ReestablishAsteroid(int x, int z) {
+		wasDestroyed [x, z] = false;
+		Debug.Log ("Respawned");
+	}
+
+	int WhatAmI(int x, int z) {
+		float justAsteroid = Random.Range (0, 100);
+		if (justAsteroid < 30.0f) {
+			return 0;
+		}
+		float thisRand = Random.Range (0, prefabs.Length);
+		float damper = Mathf.Clamp01(Vector3.Distance (new Vector3 (0, 0, 0), asteroidPositions [x, z]));
+
+		return (int)(thisRand * damper);
+
 	}
 
 	public GameObject requestRandomAsteroid() {
@@ -158,7 +181,6 @@ public class AsteroidGenerator : MonoBehaviour {
 			if (Asteroids[x, z] != null) {
 				randomAsteroid = Asteroids [x, z];
 				found = true;
-				Debug.Log ("Returning");
 			}
 		}
 		return randomAsteroid;
@@ -172,5 +194,17 @@ public class AsteroidGenerator : MonoBehaviour {
 			}
 		}
 
+	}
+
+	public void Respawn(int x, int z) {
+		Debug.Log ("Making it to over arcing respawn func");
+		StartCoroutine (Respawn_ (x, z));
+		Debug.Log ("leaving overarcing respawn func");
+	}
+
+	IEnumerator Respawn_(int x, int z) {
+		DestroyedAsteroid (x, z);
+		yield return new WaitForSeconds (10.0f);
+		ReestablishAsteroid (x, z);
 	}
 }
