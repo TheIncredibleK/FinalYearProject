@@ -22,11 +22,8 @@ public class Slot : MonoBehaviour {
 	}
 
 	public void Increase(int increaseAmount) {
-		Debug.Log ("About to try increase");
-		Debug.Log (amount + " : " + increaseAmount);
 		amount += increaseAmount;
 		Debug.Log (amount + " : " + increaseAmount);
-		Debug.Log ("About to try increase by incAmt");
 		UpdateText ();
 
 	}

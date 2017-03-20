@@ -5,6 +5,7 @@ public class Firing : MonoBehaviour {
 
     public GameObject bullet;
     bool can_fire;
+	float speed = 50.0f;
     float cool_down;
     float offset = 0.50f;
     float time_since_fire;
@@ -12,7 +13,7 @@ public class Firing : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         can_fire = true;
-        cool_down = 0.30f;
+        cool_down = 0.60f;
         time_since_fire = 0.0f;
 	}
 
@@ -28,7 +29,7 @@ public class Firing : MonoBehaviour {
             time_since_fire = 0.0f;
         }
 
-		if (fire) {
+		if (fire && can_fire) {
 			Fire ();
 			fire = false;
 		}
@@ -39,9 +40,11 @@ public class Firing : MonoBehaviour {
         if (can_fire)
         {
             can_fire = false;
-			Vector3 bullet_position = this.transform.GetChild(0).transform.position + transform.forward * 2.0f;
-            GameObject bull = (GameObject)Instantiate(bullet, bullet_position, Quaternion.identity);
-            bull.transform.rotation = this.transform.rotation;
+			for (int i = 0; i < this.transform.childCount; i++) {
+				Vector3 bullet_position = this.transform.GetChild (i).transform.position + transform.forward * Time.deltaTime * speed;
+				GameObject bull = (GameObject)Instantiate (bullet, bullet_position, Quaternion.identity);
+				bull.transform.rotation = this.transform.rotation;
+			}
 
             
         }

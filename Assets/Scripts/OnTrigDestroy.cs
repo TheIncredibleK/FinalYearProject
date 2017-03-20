@@ -20,6 +20,7 @@ public class OnTrigDestroy : MonoBehaviour {
 
 //		Debug.Log ("Collision Occured : tag :" + other.tag);
 		if (other.tag == "Bullet") {
+			Debug.Log ("Hit");
 			Destroy (other.gameObject);
 			if (!hasHealth) {
 				
@@ -51,6 +52,7 @@ public class OnTrigDestroy : MonoBehaviour {
 						cur_child.gameObject.GetComponent<Rigidbody> ().useGravity = false;
 					}
 					this.transform.DetachChildren ();
+				Destroy (this.gameObject);
 				}
 
 			} else {

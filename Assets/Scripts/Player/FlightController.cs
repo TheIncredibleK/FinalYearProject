@@ -44,6 +44,9 @@ public class FlightController : MonoBehaviour
 			string current_gesture = gestureRecogniser.Recognise(hands[1]);
 			string for_ui = gestureRecogniser.Recognise(hands[0]);
 			Leap.Hand r_hand = hands [1];
+			if (for_ui == "FIST") {
+				vehicle.transform.FindChild ("MyGuns").gameObject.GetComponent<Firing> ().fire = true;
+			}
 
 			if (r_hand != null) {
 

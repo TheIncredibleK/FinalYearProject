@@ -163,7 +163,7 @@ public class AsteroidGenerator : MonoBehaviour {
 	int WhatAmI(int x, int z) {
 		float justAsteroid = Random.Range (0, 100);
 		if (justAsteroid < 30.0f) {
-			return 0;
+			return Random.Range(0,2);
 		}
 		float thisRand = Random.Range (0, prefabs.Length);
 		float damper = Mathf.Clamp01(Vector3.Distance (new Vector3 (0, 0, 0), asteroidPositions [x, z]));
