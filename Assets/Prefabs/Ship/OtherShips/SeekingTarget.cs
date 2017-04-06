@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SeekingTarget : MonoBehaviour {
+	// PRELIMINARY TESTING CODE, NOT USED //
+
 
 	public float rotationRate;
 	GameObject target;
@@ -27,10 +29,11 @@ public class SeekingTarget : MonoBehaviour {
 			Vector3 Reltarget = target.transform.position - this.transform.position;
 			Vector3 steering = Vector3.Normalize (Reltarget - this.GetComponent<Rigidbody> ().velocity) *15.0f;
 			float curDist = Vector3.Distance (this.transform.position, steering);
+
 			if (curDist < maxAllowableDistance) {
 				steering *= (curDist / maxAllowableDistance);
 			}
-			this.GetComponent<Rigidbody> ().velocity = steering;
+			this.transform.position += steering * Time.deltaTime * 10.0f;
 			//Debug.Log ("x : " + target.x + " y: " + target.y + " z: " + target.z);
 		}
 

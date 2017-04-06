@@ -4,7 +4,12 @@ using Leap;
 using Leap.Unity;
 
 public class AddColliders : MonoBehaviour {
+	// HERE FOR HISTORIC REASONS //
 
+	// Was originally used to sort out problems occuring
+	// With the Leap Motion
+	//Fingers were not being registerd as having colliders
+	//this was a test solution, but later it was fixed via the Unity editor
     Controller collisionController;
     GameObject finger_collider;
 	// Use this for initialization

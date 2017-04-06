@@ -4,6 +4,11 @@ using Leap;
 using Leap.Unity;
 
 public class UIController : MonoBehaviour {
+	// HERE FOR HISTORIC REASONS BUT IS NO LONGER USED //
+	// Was the controller for the UI menu appearing but due to complaints from
+	//Users, the UI is now a permanent fixture of the ship//
+
+
     Controller flyController;
     GestureRecogniser gestureRecogniser;
     public GameObject UI;

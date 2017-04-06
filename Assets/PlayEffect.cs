@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayEffect : MonoBehaviour {
-
+	//Instantiates an effect
 	public GameObject effect;
 	// Use this for initialization
 	void Start () {

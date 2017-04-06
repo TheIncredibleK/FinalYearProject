@@ -5,6 +5,8 @@ using Leap.Unity;
 
 public class GestureRecogniser : MonoBehaviour
 {
+	//Takes the current frame, and gets the hands from this, also isolates what gesture
+	//Is being performed at any given time by a hand bassed in
 
     Controller gestureController;
     public GameObject camera;
@@ -17,6 +19,7 @@ public class GestureRecogniser : MonoBehaviour
 
     }
 
+	//FUnction that grabs and returns hands in the order left then right
     public System.Collections.Generic.List<Leap.Hand> getFrameHands()
     {
 
@@ -44,6 +47,7 @@ public class GestureRecogniser : MonoBehaviour
         
     }
 
+	//Recognise current gesture function
     public string Recognise(Leap.Hand cur_hand)
     {
         //Initially assuming no gesture
@@ -52,11 +56,13 @@ public class GestureRecogniser : MonoBehaviour
         bool result = checkPalmFacingCamera(cur_hand);
         if (result)
         {
+			//Was going to be used for UI
             gesture = "UI";
         }
         //If making fist
         bool result_fist = checkFist(cur_hand);
         if (result_fist) {
+			//Used for shooting
             gesture = "FIST";
         }
         
@@ -69,6 +75,7 @@ public class GestureRecogniser : MonoBehaviour
     }
 
 
+	//Function that discovered if it is within a fist
     bool checkFist(Leap.Hand cur_hand)
     {
         //Checking if the two middle fingers average distace from palm is a set distance
@@ -78,6 +85,7 @@ public class GestureRecogniser : MonoBehaviour
 
         float fing_to_palm_distance = ((Vector3.Distance(ring_finger, palm) + Vector3.Distance(middle_finger, palm)) / 2.0f) / 100.0f;
 
+		//Optimal value found via user testing
         if (fing_to_palm_distance < 0.7f)
         {
             return true;
@@ -87,6 +95,7 @@ public class GestureRecogniser : MonoBehaviour
             return false;
         }
     }
+	//Check if facing camera
     bool checkPalmFacingCamera(Leap.Hand cur_hand)
     {
         //Checking if the dot prodct of the Palms forward, here called 'PalmNormal',

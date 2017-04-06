@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MeshTests : MonoBehaviour {
+	// Used to create the more distored and deranged looking asteroids.
+	// Does so by demorphing the overall shape of the asteroid at each vertex point by a degree of distortion
 
 	Vector3[] verts;
 	int sizeOfList;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RotateAllChildren : MonoBehaviour {
+	//Script to give the space station it's strange rotation
+	//Each child rotates at it's own speed in it's alternating direction
 
 	float[] speeds;
 	// Use this for initialization

@@ -5,38 +5,46 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour {
 	//Private
+	//The slot in which this item is held
 	public GameObject myslot;
+	//Name of the slot
 	public string myName;
 	GameObject player;
+	//Distance from which it is collected
 	float collect_dist = 2.0f;
+	//Speed it moves towards player
 	float speed = 10.0f;
 	// Use this for initialization
 	void Start () {
+		Setup ();		
+	}
+
+	public void Setup() {
 		player = GameObject.FindGameObjectWithTag ("Player");
 		myslot = GameObject.FindGameObjectWithTag (myName);
+
 	}
 
 	void Update() {
 		CheckIfBeingCollected ();
 	}
 	
-	// Update is called once per frame
+	//Update amount of collected items slot
 	void UpdateAmount() {
-		Debug.Log ("About to try");
 		myslot.GetComponent<Slot> ().Increase (1);
-		Debug.Log ("Amount Updated");
 	}
 
-
+	//Function called when the item is collected
 	void BeCollected() {
-		Debug.Log ("Update");
 		UpdateAmount ();
-		Debug.Log ("Got out");
 		DestroyImmediate (this.gameObject);
-		Debug.Log ("Destroyed");
 
 	}
 
+	//If the item is within the players magentic reach
+	//Fly towards player
+	//When it is within a collection distance
+	//Update amounts and destroy self
 	void CheckIfBeingCollected() {
 		float myDist = Vector3.Distance (this.transform.position, player.transform.position);
 		//Debug.Log("My Dist : " + myDist);
