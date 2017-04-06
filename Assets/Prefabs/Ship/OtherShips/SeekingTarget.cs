@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SeekingTarget : MonoBehaviour {
+	// PRELIMINARY TESTING CODE, NOT USED //
+
 
 	public float rotationRate;
 	GameObject target;

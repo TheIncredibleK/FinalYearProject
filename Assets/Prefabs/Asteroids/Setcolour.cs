@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Setcolour : MonoBehaviour {
+	//this controls the colours of an object and all its children
+	//They can be randomised, and randomised by section
+
 	public Color colour;
 	public bool randomiseColor;
 	public bool randomiseSections;

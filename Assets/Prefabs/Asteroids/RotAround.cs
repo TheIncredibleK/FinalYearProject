@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RotAround : MonoBehaviour {
+	//A component to make the object rotate
 
 	float rotationSpeed;
 	public float stdSpeed;

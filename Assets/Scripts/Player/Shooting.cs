@@ -3,6 +3,11 @@ using Leap;
 using System.Collections;
 
 public class Shooting : MonoBehaviour {
+	//Uses gesture recogniser to
+	//Check if player is creating a fist
+	//If so, activates a boolean, allowing player to shoot
+
+	// THIS IS NOW TAKEN OVER BY THE FLIGHT CONTROLLER //
 
     GestureRecogniser gestureRecogniser;
     public GameObject gun;

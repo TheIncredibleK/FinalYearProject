@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlaySoundWithinDistance : MonoBehaviour {
+	//Controls sound and plays within a certain distance
 
 	GameObject player;
 	public float threshold;

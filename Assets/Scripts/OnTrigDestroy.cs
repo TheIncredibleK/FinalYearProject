@@ -2,6 +2,13 @@
 using System.Collections;
 
 public class OnTrigDestroy : MonoBehaviour {
+	// HERE FOR HISTORIC REASONS //
+
+	// Inital attempts at creating an overall
+	//Object destroyer
+	//Handled health, particles and drops
+
+	//Became too much hassle, and seperating destruction into individual object types became more useful
 
 	public GameObject deathParticles;
 	public GameObject deathDrop;
@@ -19,7 +26,7 @@ public class OnTrigDestroy : MonoBehaviour {
 	{
 
 //		Debug.Log ("Collision Occured : tag :" + other.tag);
-		if (other.tag == "Bullet") {
+		if (other.tag.Contains("Bullet")) {
 			Debug.Log ("Hit");
 			Destroy (other.gameObject);
 			if (!hasHealth) {
@@ -33,7 +40,7 @@ public class OnTrigDestroy : MonoBehaviour {
 				if (!Explode) {
 					Debug.Log ("Making it to if");
 					if (this.transform.childCount > 0) {
-						Debug.Log ("Looping through kids");
+						Debug.Log (this.name + " Looping through kids");
 						for (int i = 0; i < this.transform.childCount; i++) {
 							Destroy (this.transform.GetChild (i));
 						} 

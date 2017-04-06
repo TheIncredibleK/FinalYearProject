@@ -2,6 +2,10 @@
 using System.Collections;
 
 public class CreateMenu : MonoBehaviour {
+	// HERE FOR HISTORIC REASONS //
+	// was used to create the rudimentary menu from scratch, with other layers going to be built on top of it//
+	// However, users complained of  this menu being created and fading breaking the action
+	// SO the UI became a permanent fixture within the ship.
 
     public GameObject button;
     GameObject clickable;
